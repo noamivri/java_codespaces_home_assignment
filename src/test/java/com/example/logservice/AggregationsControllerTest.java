@@ -131,4 +131,22 @@ class AggregationsControllerTest {
         mockMvc.perform(get("/aggregations/error-rate"))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void errorRateWithInvalidWindowFormat() throws Exception {
+        mockMvc.perform(get("/aggregations/error-rate")
+                .param("app", "app1")
+                .param("window", "invalid"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Invalid window format")));
+    }
+
+    @Test
+    void errorRateWithEmptyWindowFormat() throws Exception {
+        mockMvc.perform(get("/aggregations/error-rate")
+                .param("app", "app1")
+                .param("window", "m"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Invalid window format")));
+    }
 }

@@ -56,6 +56,14 @@ public class AggregationsController {
             @RequestParam String app,
             @RequestParam(required=false, defaultValue="5m") String window) {
         try {
+            // Validate app parameter
+            if (app == null || app.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("App parameter is required");
+            }
+            if (app.length() > 100) {
+                return ResponseEntity.badRequest().body("App parameter is too long");
+            }
+            
             // Parse window duration (e.g., "5m" -> 5 minutes)
             long windowSeconds = parseWindowDuration(window);
             
@@ -92,15 +100,35 @@ public class AggregationsController {
     
     private long parseWindowDuration(String window) {
         // Parse duration strings like "5m", "60s", "1h"
-        if (window.endsWith("s")) {
-            return Long.parseLong(window.substring(0, window.length() - 1));
-        } else if (window.endsWith("m")) {
-            return Long.parseLong(window.substring(0, window.length() - 1)) * 60;
-        } else if (window.endsWith("h")) {
-            return Long.parseLong(window.substring(0, window.length() - 1)) * 3600;
+        if (window == null || window.isEmpty()) {
+            throw new IllegalArgumentException("Window duration cannot be empty");
         }
-        // Default to seconds
-        return Long.parseLong(window);
+        
+        try {
+            if (window.endsWith("s")) {
+                String numPart = window.substring(0, window.length() - 1);
+                if (numPart.isEmpty()) {
+                    throw new IllegalArgumentException("Invalid window format: " + window);
+                }
+                return Long.parseLong(numPart);
+            } else if (window.endsWith("m")) {
+                String numPart = window.substring(0, window.length() - 1);
+                if (numPart.isEmpty()) {
+                    throw new IllegalArgumentException("Invalid window format: " + window);
+                }
+                return Long.parseLong(numPart) * 60;
+            } else if (window.endsWith("h")) {
+                String numPart = window.substring(0, window.length() - 1);
+                if (numPart.isEmpty()) {
+                    throw new IllegalArgumentException("Invalid window format: " + window);
+                }
+                return Long.parseLong(numPart) * 3600;
+            }
+            // Try parsing as plain seconds
+            return Long.parseLong(window);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid window format: " + window + ". Expected format: number followed by s/m/h (e.g., 5m, 60s, 1h)");
+        }
     }
     
     private Instant truncateToWindow(Instant timestamp, long windowSeconds) {
