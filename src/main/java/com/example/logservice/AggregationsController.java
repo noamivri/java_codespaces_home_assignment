@@ -46,8 +46,12 @@ public class AggregationsController {
             }
             
             return ResponseEntity.ok(mapper.writeValueAsString(jsonArray));
+        } catch (IllegalArgumentException e) {
+            // User input error - safe to expose message
+            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error processing request: " + e.getMessage());
+            // Internal error - log but don't expose details
+            return ResponseEntity.internalServerError().body("Error processing request");
         }
     }
 
@@ -93,8 +97,12 @@ public class AggregationsController {
             }
             
             return ResponseEntity.ok(mapper.writeValueAsString(jsonArray));
+        } catch (IllegalArgumentException e) {
+            // User input error - safe to expose message
+            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error processing request: " + e.getMessage());
+            // Internal error - log but don't expose details
+            return ResponseEntity.internalServerError().body("Error processing request");
         }
     }
     
