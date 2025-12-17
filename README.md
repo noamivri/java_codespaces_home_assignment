@@ -43,6 +43,20 @@ Build a small service that ingests NDJSON logs, stores them, provides search & a
    ```bash
    curl http://localhost:8080/healthz
    ```
+5. Try aggregation endpoints:
+   ```bash
+   # Get top 5 apps by log count
+   curl 'http://localhost:8080/aggregations/top-apps?k=5'
+   
+   # Get top 3 apps within a time range
+   curl 'http://localhost:8080/aggregations/top-apps?from=2025-07-01T00:00:00Z&to=2025-07-01T01:00:00Z&k=3'
+   
+   # Get error rate for an app with 5-minute windows (default)
+   curl 'http://localhost:8080/aggregations/error-rate?app=billing&window=5m'
+   
+   # Get error rate with 1-hour windows
+   curl 'http://localhost:8080/aggregations/error-rate?app=search&window=1h'
+   ```
 
 ## Deliverables
 - Source code + tests
