@@ -7,7 +7,7 @@
       "installZsh": "false",
       "username": "vscode"
     },
-    "ghcr.io/devcontainers/features/maven:1": {
+    "ghcr.io/devcontainers-extra/features/maven-sdkman:2": {
       "version": "latest"
     }    
   },
