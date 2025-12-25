@@ -1,19 +1,18 @@
 
-# Searchable Log Aggregator — GitHub Codespaces Edition (Java)
-
-**Time budget:** ~6–8 hours over 2–3 days  
+# Searchable Log Aggregator dwise home assignment — GitHub Codespaces Edition (Java)
+ 
 **Language:** Java (Spring Boot)  
 **Runtime:** GitHub Codespaces via devcontainer
 
 ## Goal
-Build a small service that ingests NDJSON logs, stores them, provides search & aggregation APIs, and detects simple rate anomalies. Focus on clean code, tests, observability, and developer experience in Codespaces.
+Build a small service that ingests JSON logs, stores them, provides search & aggregation APIs, and detects simple rate anomalies. Focus on clean code, tests and observability
 
 ## Functional Requirements
-1. **Ingestion** (`POST /ingest`): Accept NDJSON (one JSON per line) with fields:
+1. **Ingestion** (`POST /ingest`): Accept JSON (one JSON per line) with fields:
    ```json
    {"ts":"2025-07-01T12:31:05Z","app":"api-gateway","level":"INFO|WARN|ERROR","message":"...","attrs":{"userId":"U123","region":"eu-west-1"}}
    ```
-   Persist to H2 (file mode) using JPA.
+   Persist to file (file mode) using JPA.
 2. **Search** (`GET /search?app=&level=&q=&from=&to=&limit=&offset=`): Filters + pagination.
 3. **Aggregations**
    - `GET /aggregations/top-apps?from=&to=&k=`: Top‑K apps by log count.
@@ -46,7 +45,7 @@ Build a small service that ingests NDJSON logs, stores them, provides search & a
 
 ## Deliverables
 - Source code + tests
-- README updates with curl examples
+- README updates with curl examples or Postman file 
 - Multiple small commits
 - (Optional) OpenAPI schema
 
